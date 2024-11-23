@@ -11,44 +11,41 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 public class RobotHardware {
 
-    //Drivetrain - naming consistent with Mecanumdrive file
+    //DRIVE
     public MecanumDrive drive;
     DcMotorEx leftFront,leftBack,rightFront,rightBack;
 
-    //Todo Intake for samples and extension
-    public DcMotorEx intakeSliderMotor,intakeMotor;
-    public Servo intake1,intake2,intake3;
+    //SLIDER
+    public DcMotorEx extRight,extLeft,turret;
 
-    //Todo Lifter
-    public DcMotorEx lifterMotor;
+    //ARM
+    public Servo shoulder,yaw,elbow,wrist,gripper;
 
-    //Todo Picker, Dropper for specimens
-    public Servo pick_drop1,pick_drop2,pick_drop3;
+    //TODO HANGER
+    public DcMotorEx hanger;
 
     //Todo Color Sensor, Camera
     public RevColorSensorV3 colorSenor;
 
     public RobotHardware(HardwareMap hardwareMap){
 
-        //Drivetrain init
+        //DRIVE init
         this.drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(0,0),0));
 
-        //Intake init
-        this.intakeMotor = hardwareMap.get(DcMotorEx.class,"intMotor");
-        this.intakeSliderMotor = hardwareMap.get(DcMotorEx.class,"intSlMotor");
-        this.intake1 = hardwareMap.get(Servo.class,"servo1");
-        this.intake2 = hardwareMap.get(Servo.class,"servo2");
-        this.intake3 = hardwareMap.get(Servo.class,"servo3");
+        //SLIDER init
+        //TODO Directions
+        this.extRight = hardwareMap.get(DcMotorEx.class,"extensionRight");
+        this.extLeft = hardwareMap.get(DcMotorEx.class,"extensionLeft");
+        this.turret = hardwareMap.get(DcMotorEx.class,"turret");
 
-        //Lifter init
-        this.lifterMotor = hardwareMap.get(DcMotorEx.class,"liftMotor");
+        //ARM init
+        this.shoulder = hardwareMap.get(Servo.class,"shoulder");
+        this.yaw = hardwareMap.get(Servo.class,"yaw");
+        this.elbow = hardwareMap.get(Servo.class,"elbow");
+        this.wrist = hardwareMap.get(Servo.class,"wrist");
+        this.gripper = hardwareMap.get(Servo.class,"gripper");
 
-        //Drop,Pick mech init
-        this.pick_drop1 = hardwareMap.get(Servo.class,"pick1");
-        this.pick_drop2 = hardwareMap.get(Servo.class,"pick2");
-        this.pick_drop3 = hardwareMap.get(Servo.class,"pick3");
-
-        //Color sensor init
-        this.colorSenor = hardwareMap.get(RevColorSensorV3.class,"color");
+        //HANGER init
+        this.hanger = hardwareMap.get(DcMotorEx.class,"hanger");
     }
 }
