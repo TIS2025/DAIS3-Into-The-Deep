@@ -10,7 +10,7 @@ public class Hanger {
     public Hanger(RobotHardware robot){this.robot = robot;}
 
     public enum HangerState{
-        INIT,UP,DOWN
+        INIT,PHASE1_UP,PHASE1_DOWN
     }
 
     public HangerState hangerState = HangerState.INIT;
@@ -21,13 +21,13 @@ public class Hanger {
                 setHanger(MotorConst.hangerInit);
                 hangerState = HangerState.INIT;
                 break;
-            case UP:
-                setHanger(MotorConst.hangerUp);
-                hangerState = HangerState.UP;
+            case PHASE1_UP:
+                setHanger(MotorConst.hangerUpPhase1);
+                hangerState = HangerState.PHASE1_UP;
                 break;
-            case DOWN:
-                setHanger(MotorConst.hangerDown);
-                hangerState = HangerState.DOWN;
+            case PHASE1_DOWN:
+                setHanger(MotorConst.hangerDownPhase1);
+                hangerState = HangerState.PHASE1_DOWN;
                 break;
         }
     }

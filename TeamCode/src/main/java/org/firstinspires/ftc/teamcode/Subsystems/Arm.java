@@ -8,19 +8,52 @@ public class Arm {
     public Arm(RobotHardware robot){this.robot = robot;}
 
     public enum GripperState{
-        OPEN,CLOSE,INIT
+        OPEN,
+        CLOSE,
+        INIT
     }
     public enum WristState{
-        WRIST0,WRIST90,INIT
+        WRIST0,
+        WRIST90,
+        INIT,
+        WRIST180
     }
     public enum ElbowState{
-        INIT,UP,DOWN
+        INIT,
+        UP,
+        DOWN,
+        HOME,
+        PRE_INTAKE,
+        INTAKE,
+        POST_INTAKE,
+        PRE_BUCKET_DROP,
+        BUCKET_DROP,
+        SPECIMEN_PRE_INTAKE,
+        SPECIMEN_INTAKE,
+        SPECIMEN_PRE_DROP,
+        SPECIMEN_DROP
     }
     public enum ShoulderState{
-        INIT,UP,DOWN
+        INIT,
+        UP,
+        DOWN,
+        HOME,
+        PRE_INTAKE,
+        INTAKE,
+        POST_INTAKE,
+        PRE_BUCKET_DROP,
+        BUCKET_DROP,
+        SPECIMEN_PRE_INTAKE,
+        SPECIMEN_INTAKE,
+        SPECIMEN_PRE_DROP,
+        SPECIMEN_DROP
     }
     public enum YawState{
-        INIT,NEUTRAL,LEFT,RIGHT
+        INIT,
+        NEUTRAL,
+        LEFT,
+        RIGHT,
+        HOME
     }
 
     public GripperState gripperState = GripperState.INIT;
@@ -60,6 +93,10 @@ public class Arm {
                 setWrist(ServoConst.wrist90);
                 wristState = WristState.WRIST90;
                 break;
+            case WRIST180:
+                setWrist(ServoConst.wrist180);
+                wristState = WristState.WRIST180;
+                break;
         }
     }
 
@@ -77,6 +114,46 @@ public class Arm {
                 setElbow(ServoConst.elbowDown);
                 elbowState = ElbowState.DOWN;
                 break;
+            case HOME:
+                setElbow(ServoConst.elbowHome);
+                elbowState = ElbowState.HOME;
+                break;
+            case PRE_INTAKE:
+                setElbow(ServoConst.elbowPreIntake);
+                elbowState = ElbowState.PRE_INTAKE;
+                break;
+            case INTAKE:
+                setElbow(ServoConst.elbowIntake);
+                elbowState = ElbowState.INTAKE;
+                break;
+            case POST_INTAKE:
+                setElbow(ServoConst.elbowPostIntake);
+                elbowState = ElbowState.POST_INTAKE;
+                break;
+            case PRE_BUCKET_DROP:
+                setElbow(ServoConst.elbowPreBucketDrop);
+                elbowState = ElbowState.PRE_BUCKET_DROP;
+                break;
+            case BUCKET_DROP:
+                setElbow(ServoConst.elbowBucketDrop);
+                elbowState = ElbowState.BUCKET_DROP;
+                break;
+            case SPECIMEN_PRE_INTAKE:
+                setElbow(ServoConst.elbowSpecimenPrePick);
+                elbowState = ElbowState.SPECIMEN_PRE_INTAKE;
+                break;
+            case SPECIMEN_INTAKE:
+                setElbow(ServoConst.elbowSpecimenPick);
+                elbowState = ElbowState.SPECIMEN_INTAKE;
+                break;
+            case SPECIMEN_PRE_DROP:
+                setElbow(ServoConst.elbowSpecimenPreDrop);
+                elbowState = ElbowState.SPECIMEN_PRE_DROP;
+                break;
+            case SPECIMEN_DROP:
+                setElbow(ServoConst.elbowSpecimenDrop);
+                elbowState = ElbowState.SPECIMEN_DROP;
+                break;
         }
     }
 
@@ -93,6 +170,46 @@ public class Arm {
             case UP:
                 setShoulder(ServoConst.shoulderUp);
                 shoulderState = ShoulderState.UP;
+                break;
+            case HOME:
+                setShoulder(ServoConst.shoulderHome);
+                shoulderState = ShoulderState.HOME;
+                break;
+            case PRE_INTAKE:
+                setShoulder(ServoConst.shoulderPreIntake);
+                shoulderState = ShoulderState.PRE_INTAKE;
+                break;
+            case INTAKE:
+                setShoulder(ServoConst.shoulderIntake);
+                shoulderState = ShoulderState.INTAKE;
+                break;
+            case POST_INTAKE:
+                setShoulder(ServoConst.shoulderPostIntake);
+                shoulderState = ShoulderState.POST_INTAKE;
+                break;
+            case PRE_BUCKET_DROP:
+                setShoulder(ServoConst.shoulderPreBucketDrop);
+                shoulderState = ShoulderState.PRE_BUCKET_DROP;
+                break;
+            case BUCKET_DROP:
+                setShoulder(ServoConst.shoulderBucketDrop);
+                shoulderState = ShoulderState.BUCKET_DROP;
+                break;
+            case SPECIMEN_PRE_INTAKE:
+                setShoulder(ServoConst.shoulderSpecimenPrePick);
+                shoulderState = ShoulderState.SPECIMEN_PRE_INTAKE;
+                break;
+            case SPECIMEN_INTAKE:
+                setShoulder(ServoConst.shoulderSpecimenPick);
+                shoulderState = ShoulderState.SPECIMEN_INTAKE;
+                break;
+            case SPECIMEN_PRE_DROP:
+                setShoulder(ServoConst.shoulderSpecimenPreDrop);
+                elbowState = ElbowState.SPECIMEN_PRE_DROP;
+                break;
+            case SPECIMEN_DROP:
+                setShoulder(ServoConst.shoulderSpecimenDrop);
+                elbowState = ElbowState.SPECIMEN_DROP;
                 break;
         }
     }
@@ -115,12 +232,16 @@ public class Arm {
                 setYaw(ServoConst.yawRight);
                 yawState = YawState.RIGHT;
                 break;
+            case HOME:
+                setYaw(ServoConst.yawHome);
+                yawState = YawState.HOME;
+                break;
         }
     }
 
     public void setGripper(double pos){robot.gripper.setPosition(pos);}
     public void setWrist(double pos){robot.wrist.setPosition(pos);}
     public void setElbow(double pos){robot.elbow.setPosition(pos);}
-    public void setShoulder(double pos){robot.elbow.setPosition(pos);}
-    public void setYaw(double pos){robot.elbow.setPosition(pos);}
+    public void setShoulder(double pos){robot.shoulder.setPosition(pos);}
+    public void setYaw(double pos){robot.yaw.setPosition(pos);}
 }

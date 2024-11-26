@@ -1,38 +1,49 @@
 package org.firstinspires.ftc.teamcode.Globals;
 
+import com.acmerobotics.dashboard.config.Config;
+
+@Config
 public class ServoConst {
+    public static double gripperInit = 0.8;
+    public static double gripperOpen = 0.75;
+    public static double gripperClose = 0.875;
 
-    //Todo input from getValues
+    public static double wristInit = 0;
+    public static double wrist0 = 0;
+    public static double wrist90 = 0.5;
+    public static double wrist180 = 1;
 
-    public static double intakeServo1Init = 0;
-    public static double intakeServo1State1 = 0;
-    public static double intakeServo1State2 = 0;
-    public static double intakeServo1State3 = 0;
+    public static double elbowInit = 0.5;
+    public static double elbowUp = 0.5;
+    public static double elbowDown = 0.615;
+    public static double elbowHome = 0.45;
+    public static double elbowPreIntake = 0.485;
+    public static double elbowIntake = 0.495;
+    public static double elbowPostIntake = 0.535;
+    public static double elbowPreBucketDrop = 0.55;
+    public static double elbowBucketDrop = 0.58;
+    public static double elbowSpecimenPrePick = 0.605;
+    public static double elbowSpecimenPick = 0.63;
+    public static double elbowSpecimenPreDrop = 0.625;
+    public static double elbowSpecimenDrop = 0.625;
 
-    public static double intakeServo2Init = 0;
-    public static double intakeServo2State1 = 0;
-    public static double intakeServo2State2 = 0;
-    public static double intakeServo2State3 = 0;
+    public static double shoulderInit = 0.5;
+    public static double shoulderUp = 0.5;
+    public static double shoulderDown = 0.5;
+    public static double shoulderHome = 0.3;
+    public static double shoulderPreIntake = 0.35;
+    public static double shoulderIntake = 0.45;
+    public static double shoulderPostIntake = 0.3;
+    public static double shoulderPreBucketDrop = 0.45;
+    public static double shoulderBucketDrop = 0.45;
+    public static double shoulderSpecimenPrePick = 1;
+    public static double shoulderSpecimenPick = 1;
+    public static double shoulderSpecimenPreDrop = 0.6;
+    public static double shoulderSpecimenDrop = 0.6;
 
-    public static double intakeServo3Init = 0;
-    public static double intakeServo3State1 = 0;
-    public static double intakeServo3State2 = 0;
-    public static double intakeServo3State3 = 0;
-
-
-    public static double pickerServo1Init = 0;
-    public static double pickerServo1State1 = 0;
-    public static double pickerServo1State2 = 0;
-    public static double pickerServo1State3 = 0;
-
-    public static double pickerServo2Init = 0;
-    public static double pickerServo2State1 = 0;
-    public static double pickerServo2State2 = 0;
-    public static double pickerServo2State3 = 0;
-
-    public static double pickerServo3Init = 0;
-    public static double pickerServo3State1 = 0;
-    public static double pickerServo3State2 = 0;
-    public static double pickerServo3State3 = 0;
-
+    public static double yawInit = 0.5;
+    public static double yawNeutral = 0.825;
+    public static double yawLeft = 0.5;
+    public static double yawRight = 0.5;
+    public static double yawHome = 0.45;
 }

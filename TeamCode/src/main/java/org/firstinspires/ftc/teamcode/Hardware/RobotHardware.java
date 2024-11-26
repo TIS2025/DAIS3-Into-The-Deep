@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.Hardware;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -25,7 +27,7 @@ public class RobotHardware {
     public DcMotorEx hanger;
 
     //Todo Color Sensor, Camera
-    public RevColorSensorV3 colorSenor;
+    public RevColorSensorV3 colorSensor;
 
     public RobotHardware(HardwareMap hardwareMap){
 
@@ -33,10 +35,13 @@ public class RobotHardware {
         this.drive = new MecanumDrive(hardwareMap,new Pose2d(new Vector2d(0,0),0));
 
         //SLIDER init
-        //TODO Directions
         this.extRight = hardwareMap.get(DcMotorEx.class,"extensionRight");
+        this.extRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.extLeft = hardwareMap.get(DcMotorEx.class,"extensionLeft");
+        this.extLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.turret = hardwareMap.get(DcMotorEx.class,"turret");
+        this.turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.turret.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //ARM init
         this.shoulder = hardwareMap.get(Servo.class,"shoulder");
@@ -47,5 +52,25 @@ public class RobotHardware {
 
         //HANGER init
         this.hanger = hardwareMap.get(DcMotorEx.class,"hanger");
+        this.hanger.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.hanger.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        //Color Sensor
+        this.colorSensor = hardwareMap.get(RevColorSensorV3.class,"color");
+        this.colorSensor.setGain(50);
+    }
+
+    public void init_encoders(){
+        extRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        extLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        hanger.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void reset_encoders(){
+        extRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        hanger.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }

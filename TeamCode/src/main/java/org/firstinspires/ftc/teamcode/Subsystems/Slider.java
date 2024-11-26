@@ -1,72 +1,118 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.acmerobotics.roadrunner.InstantAction;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.teamcode.Globals.MotorConst;
-import org.firstinspires.ftc.teamcode.Globals.ServoConst;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 
 public class Slider {
+    private RobotHardware robot;
+    public Slider(RobotHardware robot){this.robot = robot;}
 
-    RobotHardware robot;
-
-    public Slider(RobotHardware robot){this.robot=robot;}
-
-    public enum SliderState{
-        INIT,
-        STATE1,
-        STATE2,
-        STATE3
+    public enum ExtState{
+        MIN,MAX,MID,INIT,BUCKET_DROP,SPECIMEN_PRE_PICK,SPECIMEN_PRE_DROP,SPECIMEN_DROP
+    }
+    public enum TurretState{
+        UP,DOWN,INIT,PRE_BUCKET_DROP,SPECIMEN_PRE_PICK,SPECIMEN_PRE_DROP,SPECIMEN_DROP
     }
 
-    SliderState sliderState = SliderState.INIT;
+    int extOffset = 0;
 
-    public void setSliderPos(int pos){
-        robot.intakeSliderMotor.setTargetPosition(pos);
-        robot.intakeSliderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.intakeSliderMotor.setPower(1);
-    }
+    public ExtState extState = ExtState.INIT;
+    public TurretState turretState = TurretState.INIT;
 
-    public InstantAction SetSlider(SliderState state){
+    public void updateExtState(ExtState state){
         switch (state){
             case INIT:
-                sliderState = SliderState.INIT;
-                return new InstantAction(()->setSliderPos(MotorConst.sliderInit));
-            case STATE1:
-                sliderState = SliderState.STATE1;
-                return new InstantAction(()->setSliderPos(MotorConst.sliderState1));
-            case STATE2:
-                sliderState  = SliderState.STATE2;
-                return new InstantAction(()->setSliderPos(MotorConst.sliderState2));
-            case STATE3:
-                sliderState = SliderState.STATE3;
-                return new InstantAction(()->setSliderPos(MotorConst.sliderState3));
-            default:
-                sliderState = SliderState.INIT;
-                return new InstantAction(()->setSliderPos(0));
+                setExt(MotorConst.extInit);
+                extState = ExtState.INIT;
+                break;
+            case MIN:
+                setExt(MotorConst.extMin);
+                extState = ExtState.MIN;
+                break;
+            case MID:
+                setExt(MotorConst.extMid);
+                extState = ExtState.MID;
+                break;
+            case MAX:
+                setExt(MotorConst.extMax);
+                extState = ExtState.MAX;
+                break;
+            case BUCKET_DROP:
+                setExt(MotorConst.extHighBucketDrop);
+                extState = ExtState.BUCKET_DROP;
+                break;
+            case SPECIMEN_PRE_PICK:
+                setExt(MotorConst.extSpecimenPrePick);
+                extState = ExtState.SPECIMEN_PRE_PICK;
+                break;
+            case SPECIMEN_PRE_DROP:
+                setExt(MotorConst.extSpecimenPreDrop);
+                extState = ExtState.SPECIMEN_PRE_DROP;
+                break;
+            case SPECIMEN_DROP:
+                setExt(MotorConst.extSpecimenDrop);
+                extState = ExtState.SPECIMEN_DROP;
+                break;
         }
     }
 
-    public boolean isBusy(){
-        return robot.intakeSliderMotor.isBusy();
+    public void updateTurretState(TurretState state){
+        switch (state){
+            case INIT:
+                setTurret(MotorConst.turretInit);
+                turretState = TurretState.INIT;
+                break;
+            case UP:
+                setTurret(MotorConst.turretUp);
+                turretState = TurretState.UP;
+                break;
+            case DOWN:
+                setTurret(MotorConst.turretDown);
+                turretState = TurretState.DOWN;
+                break;
+            case PRE_BUCKET_DROP:
+                setTurret(MotorConst.turretBucketPreDrop);
+                turretState = TurretState.PRE_BUCKET_DROP;
+                break;
+            case SPECIMEN_PRE_PICK:
+                setTurret(MotorConst.turretSpecimenPrePick);
+                turretState = TurretState.SPECIMEN_PRE_PICK;
+                break;
+            case SPECIMEN_PRE_DROP:
+                setTurret(MotorConst.turretSpecimenPreDrop);
+                turretState = TurretState.SPECIMEN_PRE_DROP;
+                break;
+            case SPECIMEN_DROP:
+                setTurret(MotorConst.turretSpecimenDrop);
+                turretState = TurretState.SPECIMEN_DROP;
+                break;
+        }
     }
 
-    public void stopSlider(){
-        robot.intakeSliderMotor.setPower(0);
+    public void setExt(int target){
+        int bottom_clip = (int)(robot.turret.getCurrentPosition()/1100*160);
+        int target_clip = Math.max(Math.min(target - bottom_clip,3000),-bottom_clip);
+        robot.extLeft.setTargetPosition(target_clip);
+        robot.extRight.setTargetPosition(target_clip);
+        robot.extLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.extRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.extLeft.setPower(1);
+        robot.extRight.setPower(1);
     }
 
-    public InstantAction IncSliderby100(){
-        return new InstantAction(()->setSliderPos(robot.intakeSliderMotor.getCurrentPosition()+100));
+    public boolean isExtBusy(){
+        return robot.extRight.isBusy();
     }
-    public InstantAction DecSliderby100(){
-        return new InstantAction(()->setSliderPos(robot.intakeSliderMotor.getCurrentPosition()-100));
+
+    public boolean isTurretBusy(){
+        return robot.turret.isBusy();
     }
-    public InstantAction IncSliderby5(){
-        return new InstantAction(()->setSliderPos(robot.intakeSliderMotor.getCurrentPosition()+5));
-    }
-    public InstantAction DecSliderby5(){
-        return new InstantAction(()->setSliderPos(robot.intakeSliderMotor.getCurrentPosition()-5));
+
+    public void setTurret(int target){
+        robot.turret.setTargetPosition(target);
+        robot.turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.turret.setPower(0.4);
     }
 }
