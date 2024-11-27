@@ -9,9 +9,12 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.Sequences.BucketSeq;
+import org.firstinspires.ftc.teamcode.Sequences.FinalSeq;
 import org.firstinspires.ftc.teamcode.Sequences.HangerSeq;
 import org.firstinspires.ftc.teamcode.Sequences.InitSeq;
 import org.firstinspires.ftc.teamcode.Sequences.IntakeSeq;
@@ -42,6 +45,7 @@ public class TestSequences extends LinearOpMode {
         int hanger_pos = 0;
 
         boolean wrist_rotate = false;
+        double distance;
 
         robot.reset_encoders();
         new InitSeq(arm,hanger,slider);
@@ -51,6 +55,7 @@ public class TestSequences extends LinearOpMode {
             C1.copy(gamepad1);
             P2.copy(C2);
             C2.copy(gamepad2);
+            distance = robot.colorSensor.getDistance(DistanceUnit.MM);
 
             robot.drive.setDrivePowers(
                     new PoseVelocity2d(
@@ -63,30 +68,28 @@ public class TestSequences extends LinearOpMode {
             );
             ftc = updateAction();
             if(gamepad1.a){
-                ftc.add(IntakeSeq.Home(arm,slider));
+//                ftc.add(IntakeSeq.Home(arm,slider));
+                ftc.add(FinalSeq.HomePos(arm,slider));
             }
             if(gamepad1.b){
-                ftc.add(IntakeSeq.PreSampleIntake(arm));
+//                ftc.add(IntakeSeq.PreSampleIntake(arm));
+                ftc.add(FinalSeq.SamplePickPos(arm));
             }
             if(gamepad1.x){
-                ftc.add(
-                        new SequentialAction(
-                                IntakeSeq.SampleIntake(arm),
-                                new SleepAction(1),
-                                IntakeSeq.PostSampleIntake(arm)
-                        )
-                );
+//                ftc.add(
+//                        new SequentialAction(
+//                                IntakeSeq.SampleIntake(arm),
+//                                new SleepAction(1),
+//                                IntakeSeq.PostSampleIntake(arm)
+//                        )
+//                );
+                ftc.add(FinalSeq.SamplePick(arm,slider));
             }
             if(gamepad1.y){
                 ftc.add(IntakeSeq.PreSpecimenIntake(arm,slider));
             }
-            if(gamepad1.dpad_up){
-                ftc.add(BucketSeq.PreDrop(slider,arm));
-            }
-            if(gamepad1.dpad_right){
-                ftc.add(BucketSeq.Drop(slider,arm));
-            }
-            if(gamepad1.dpad_down){
+
+            if(distance<10 && arm.elbowState == Arm.ElbowState.SPECIMEN_PRE_INTAKE){
                 ftc.add(
                         new SequentialAction(
                                 IntakeSeq.SpecimenIntake(arm),
@@ -94,6 +97,14 @@ public class TestSequences extends LinearOpMode {
                                 IntakeSeq.SpecimenPreDrop(arm,slider)
                         )
                 );
+            }
+            if(gamepad1.dpad_up){
+//                ftc.add(BucketSeq.PreDrop(slider,arm));
+                ftc.add(FinalSeq.SampleDropPos(arm,slider));
+            }
+            if(gamepad1.dpad_right){
+//                ftc.add(BucketSeq.Drop(slider,arm));
+                ftc.add(FinalSeq.SampleDrop(arm,slider));
             }
             if(gamepad1.dpad_left){
                 ftc.add(IntakeSeq.SpecimenDrop(arm,slider));
@@ -127,6 +138,7 @@ public class TestSequences extends LinearOpMode {
             telemetry.addData("Elbow",robot.elbow.getPosition());
             telemetry.addData("Wrist",robot.wrist.getPosition());
             telemetry.addData("Gripper",robot.gripper.getPosition());
+            telemetry.addData("Distance",distance);
             telemetry.update();
         }
     }

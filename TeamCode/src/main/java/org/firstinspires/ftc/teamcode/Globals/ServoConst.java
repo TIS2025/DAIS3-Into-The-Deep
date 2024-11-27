@@ -19,7 +19,7 @@ public class ServoConst {
     public static double elbowHome = 0.45;
     public static double elbowPreIntake = 0.485;
     public static double elbowIntake = 0.495;
-    public static double elbowPostIntake = 0.535;
+    public static double elbowPostIntake = 0.455;
     public static double elbowPreBucketDrop = 0.55;
     public static double elbowBucketDrop = 0.58;
     public static double elbowSpecimenPrePick = 0.605;
